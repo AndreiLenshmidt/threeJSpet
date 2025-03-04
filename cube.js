@@ -22,44 +22,26 @@ const material = new THREE.MeshBasicMaterial({
   color: 0x00ff00,
   wireframe: true,
 });
-const cube = new THREE.Mesh(geometry, material);
-// изменяем позицию объекта
-cube.position.x = -1;
-cube.position.y = 2;
-cube.position.z = 1;
-// длина вектора
-console.log("длина вектора", cube.position.length());
-// расстояние до другого вектора
-console.log(
-  "расстояние до другого вектора",
-  cube.position.distanceTo(camera.position)
-);
-// нормализованное значение
-console.log("нормализованное значение", cube.position.normalize());
-// быстрое изменение координат
-console.log("быстрое изменение координат", cube.position.set(0, 0, 0));
+// Создаем три куба
+const cube1 = new THREE.Mesh(geometry, material);
+cube1.position.x = -2;
+const cube2 = new THREE.Mesh(geometry, material);
+cube2.position.x = 0;
+const cube3 = new THREE.Mesh(geometry, material);
+cube3.position.x = 2;
+// Группирум три куба в одну группу
+const group = new THREE.Group();
+group.add(cube1).add(cube2).add(cube3);
 
-// изменяем масшаб объкта по осям:
-cube.scale.x = 0.5;
-cube.scale.y = 1.2;
-cube.scale.z = 0.6;
-// изменяем масшаб объкта по всем осям:
-cube.scale.set(1, 1, 1);
-
-scene.add(cube);
-// Позиция камеры ближе/дальше от экрана, при 0 камера внутри объекта
+scene.add(group);
 camera.position.z = 5;
-// Позиция обзора камеры lookAt передаем вектор или позицию
-// camera.lookAt(new THREE.Vector3(2, 0, 0));
-// camera.lookAt(cube.position);
+
+// group.rotation.reorder("YXZ");
 
 function animate() {
-  //  Изменить порядок вращения по умолчанию позволяет свойство reorder
-  //   cube.rotation.reorder("XYZ");
-  // вращаем объект при помощи свойства rotation. Порядок вращения по умолчанию : XYZ
-  cube.rotation.x += 0.01;
-  cube.rotation.y += 0.01;
-
+  // вращаем всю группу разом
+  group.rotation.x += 0.01;
+  group.rotation.y += 0.01;
   renderer.render(scene, camera);
 }
 
