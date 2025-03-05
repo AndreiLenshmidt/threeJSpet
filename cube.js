@@ -3,7 +3,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 const scene = new THREE.Scene();
-// Создаем оси координат и добавляем их на экран (сцену)
+
 const axisHelper = new THREE.AxesHelper(3);
 scene.add(axisHelper);
 
@@ -19,9 +19,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setAnimationLoop(animate);
 document.body.appendChild(renderer.domElement);
 camera.position.set(0, 2, 5);
-// Позиция обзора камеры lookAt передаем вектор или позицию
-// camera.lookAt(new THREE.Vector3(2, 0, 0));
-// camera.lookAt(cube.position);
+
 const floor = new THREE.Mesh(
   new THREE.PlaneGeometry(10, 10),
   new THREE.MeshStandardMaterial({
@@ -30,14 +28,14 @@ const floor = new THREE.Mesh(
     roughness: 0.5,
   })
 );
-
+// Добавляем встроенный контроллер, позволяет вращать модельку мышью
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
-
+// Добавляем плоскость
 floor.receiveShadow = true;
 floor.rotation.x = -Math.PI * 0.5;
 scene.add(floor);
-
+// Добавляем источник света
 const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.61);
 hemiLight.position.set(0, 50, 0);
 scene.add(hemiLight);
@@ -47,7 +45,7 @@ dirLight.position.set(-8, 12, 8);
 dirLight.castShadow = true;
 dirLight.shadow.mapSize = new THREE.Vector2(1024, 1024);
 scene.add(dirLight);
-
+// Функция загружает модельку на страницу, принимает 4 параметра, url, колбек успешной загрузки, колбек прогресс зпрузки, колбек неудачи
 const loader = new GLTFLoader();
 loader.load(
   "/FinalBaseMesh.gltf",
