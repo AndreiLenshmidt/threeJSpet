@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 const scene = new THREE.Scene();
 // Создаем оси координат и добавляем их на экран (сцену)
@@ -30,6 +31,9 @@ const floor = new THREE.Mesh(
   })
 );
 
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+
 floor.receiveShadow = true;
 floor.rotation.x = -Math.PI * 0.5;
 scene.add(floor);
@@ -46,14 +50,15 @@ scene.add(dirLight);
 
 const loader = new GLTFLoader();
 loader.load(
-  "/FinalBaseMesh.glb",
-  function (gltf) {
-    // scene.add(gltf.scene);
-    console.log("suscess");
-    console.log(gltf);
+  "/FinalBaseMesh.gltf",
+  (gltf) => {
+    gltf.scene.children[0].scale.set(8, 8, 8);
+    scene.add(gltf.scene.children[0]);
+    // console.log("suscess");
+    // console.log(gltf);
   },
   undefined,
-  function (error) {
+  (error) => {
     console.error(error);
   }
 );
@@ -69,11 +74,11 @@ function animate() {
 }
 
 // Масштабирование объекта колесом мыши
-document.addEventListener("wheel", (e) => {
-  //   console.log(e);
-  if (e.deltaY < -1) {
-    camera.position.z = camera.position.z - 1;
-  } else {
-    camera.position.z = camera.position.z + 1;
-  }
-});
+// document.addEventListener("wheel", (e) => {
+//   //   console.log(e);
+//   if (e.deltaY < -1) {
+//     camera.position.z = camera.position.z - 1;
+//   } else {
+//     camera.position.z = camera.position.z + 1;
+//   }
+// });
